@@ -1,9 +1,10 @@
-class Car {
+import { Owner } from "./Owner.ts";
+
+export class Engine {
     constructor(
         public manufacturer: string,
         public ps: number,
         public fuel: string,
-        public owner?: string,
     ) {
     }
 
@@ -15,23 +16,7 @@ class Car {
         return this.ps;
     }
 
-    setOwner(owner: string) {
-        this.owner = owner;
-    }
-
-    getOwner() {
-        return this.owner;
-    }
-}
-
-class Owner {
-    constructor(
-        public firstname: string,
-        public lastname: string,
-        public age: number,
-    ) {}
-
-    getfirastname(): string {
-        return this.firstname;
+    getEngine(): string {
+        return ` Car: ${this.manufacturer}, ${this.ps} PS, ${this.fuel}`;
     }
 }
