@@ -1,0 +1,64 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+skinparam usecase {
+    BackgroundColor PaleTurquoise
+    BorderColor DarkSlateGray
+    ArrowColor DarkSlateGray
+}
+skinparam actor {
+    BackgroundColor Moccasin
+    BorderColor SaddleBrown
+}
+
+actor "Servicetechniker" as user
+actor "Büroarbeiter" as admin
+
+
+package "Wartungsportal" {
+
+ rectangle "Wartung" as recwartung {
+        usecase "Scanner + manuell" as UC_Scanner
+        usecase "Bewerten" as UC_Bewerten
+ }
+    
+usecase "check login" as chl
+    
+    rectangle "Authentifizierung" as rect_auth {
+        usecase "Login" as UC_Login
+        usecase "Verify Passwort" as UC_Verify
+        usecase "Display Login\nError" as UC_Error
+    }
+
+    rectangle "Büro Aufgaben" as rect_admin {
+        usecase "Wartung und\nBerichte erstellen" as UC_Wartung
+        usecase "Daten Anlegen" as UC_Daten
+        usecase "Etiketten erstellen" as UC_Etiketten
+    }
+
+    
+}
+
+
+rect_auth -[hidden]- rect_admin
+
+
+user -- UC_Scanner
+user -- UC_Login
+
+admin -- UC_Login
+admin -- UC_Wartung
+admin -- UC_Daten
+admin -- UC_Etiketten
+
+UC_Login ..> UC_Verify : <<include>>
+UC_Error .> UC_Login : <<extend>>
+UC_Scanner ..> UC_Bewerten : <<include>>
+
+
+UC_Scanner ..> chl: <<include>>
+UC_Wartung ..> chl: <<include>>
+UC_Daten ..> chl: <<include>>
+UC_Etiketten ..> chl: <<include>>
+@enduml
