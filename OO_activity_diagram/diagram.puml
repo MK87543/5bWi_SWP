@@ -1,0 +1,41 @@
+@startuml
+' Swimlanes (Partitions) to group related activities
+partition "User" {
+  start
+  :Login;
+  note right: User enters credentials
+}
+
+partition "System" {
+  ' Decision (If/Else)
+  if (Valid credentials?) then (no)
+    :Show Error;
+    stop
+  else (yes)
+    :Load Dashboard;
+  endif
+
+  ' Parallel processing (Fork/Join)
+  fork
+    :Fetch User Data;
+  fork again
+    :Fetch Notifications;
+  end fork
+
+  ' Loop (While)
+  while (More items?) is (yes)
+    :Process Item;
+  endwhile (no)
+  
+  ' Loop (Repeat)
+  repeat
+    :Check Server Status;
+  repeat while (Status is pending?) is (yes)
+}
+
+partition "Database" #LightBlue {
+    :Save Access Log;
+}
+
+stop
+@enduml

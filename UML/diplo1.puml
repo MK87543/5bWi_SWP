@@ -1,0 +1,115 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "Main Application" {
+    class Main {
+        + render()
+    }
+
+    class Login {
+        + onLogin()
+    }
+
+    class MenueContainer {
+        + navigate()
+    }
+}
+
+package "Desktop Components" {
+    class Insert {
+        - projects: Project[]
+        - loadedData: any
+        + getProjects()
+    }
+
+    class CsvLoader {
+        + loadCsv()
+    }
+
+    class InsertTemplate {
+        + renderForm()
+    }
+
+    class Reports {
+        - projects: Project[]
+        - selectedData: any[]
+        + fetchAllInspectionAnswers()
+    }
+
+    class Table {
+        + renderTable()
+    }
+
+    class PDFh {
+        + generatePDF()
+    }
+
+    class Edit {
+        + render()
+    }
+
+    class Labels {
+        + generateLabels()
+    }
+    
+    class Statistic {
+        + renderCharts()
+    }
+}
+
+package "Mobile Components" {
+    class Scanner {
+        - isScanning: boolean
+        - showFormular: boolean
+        + handleScan()
+    }
+
+    class Formular {
+        + submitForm()
+    }
+    
+    class MobileScannerLayout {
+        + render()
+    }
+}
+
+package "Helpers" {
+    class SupabaseHelper {
+        + getProjects()
+        + getInspectionAnswers()
+        + getUserStatistics()
+        + getFilteredData()
+        + getProductByProject()
+    }
+
+    class IndexDBHelper {
+        + saveOffline()
+        + sync()
+        + clearProjects()
+    }
+}
+
+Main --> Login : renders
+Main --> MenueContainer : renders (Desktop)
+Main --> Scanner : renders (Mobile)
+
+MenueContainer --> Insert : navigates to
+MenueContainer --> Reports : navigates to
+MenueContainer --> Edit : navigates to
+MenueContainer --> Labels : navigates to
+MenueContainer --> Statistic : navigates to
+
+Insert --> CsvLoader : uses
+Insert --> InsertTemplate : uses
+Insert ..> SupabaseHelper : uses
+
+Reports --> Table : uses
+Reports --> PDFh : uses
+Reports ..> SupabaseHelper : uses
+
+Scanner --> Formular : uses
+Scanner --> MobileScannerLayout : uses
+Scanner ..> SupabaseHelper : uses
+Scanner ..> IndexDBHelper : uses
+
+@enduml

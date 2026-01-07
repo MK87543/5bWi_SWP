@@ -1,0 +1,56 @@
+@startuml
+
+interface ILockable {
+    + lock(): void
+    + unlock(): void
+    + isLocked(): boolean
+}
+
+interface ISecurable {
+    + isSecure(): boolean
+}
+
+class Door {
+    - isLocked: boolean
+    + lock(): void
+    + unlock(): void
+    + isLocked(): boolean
+}
+
+class Window {
+    - isLocked: boolean
+    + lock(): void
+    + unlock(): void
+    + isLocked(): boolean
+}
+
+class Car {
+    - doors: Door[]
+    + isSecure(): boolean
+    + addDoor(door: Door): void
+}
+
+class House {
+    - doors: Door[]
+    - windows: Window[]
+    + isSecure(): boolean
+    + addDoor(door: Door): void
+    + addWindow(window: Window): void
+}
+
+class SecurityService {
+    + checkSecurity(object: ISecurable): boolean
+}
+
+ILockable <|.. Door
+ILockable <|.. Window
+ISecurable <|.. Car
+ISecurable <|.. House
+
+Car "1" *-- "1..*" Door : has >
+House "1" *-- "1..*" Door : has >
+House "1" *-- "1..*" Window : has >
+
+SecurityService ..> ISecurable : monitors >
+
+@enduml
